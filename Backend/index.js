@@ -4,9 +4,9 @@ const app = express();
 
 
 app.use('/games', require('./controllers/games')); // gets games model //
-// app.use('/platforms', require('./controllers/platforms')); // gets platforms model //
+
 app.get('/', (req, res) => {
-    res.send('Hello Cameron!')
+    res.send('Hello Team!')
 }); // home-default page  //
 
 app.get('*', (req, res) => {

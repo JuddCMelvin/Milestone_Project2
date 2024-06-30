@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 router.get('/', (req, res) => {
-    res.send('games will go here')
+    res.send('GET /games stub')
 }); // game stub for now //
 
 
