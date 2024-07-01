@@ -1,6 +1,9 @@
 const router = require('express').Router();
+const axios = require('axios');
 const db = require('../models');
 
+// RAWG API endpoint base URL
+const RAWG_API_URL = 'https://api.rawg.io/api';
 
 router.get('/', async (req, res) => {
     try {
