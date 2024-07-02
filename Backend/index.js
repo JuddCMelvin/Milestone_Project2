@@ -1,9 +1,12 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const app = express();
+const gamesRouter = require('./controllers/games');
 
 // middleware to parse JSON bodies //
 app.use(express.json());
+app.use(cors());
 
 // routes //
 app.use('/games', require('./controllers/games')); // route for game-related operations //
