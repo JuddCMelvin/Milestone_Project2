@@ -3,8 +3,8 @@
 }
 
 .App-logo {
-  height: 40vmin;
   pointer-events: none;
+  width: 20px; 
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -35,4 +35,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Navbar {
+  display: flex; 
+  justify-content: space-around; 
+  align-items: center;
+  background-color: grey;
+  width: 100%; 
 }
