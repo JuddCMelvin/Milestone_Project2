@@ -1,9 +1,12 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const app = express();
+const gamesRouter = require('./controllers/games');
 
 // middleware to parse JSON bodies //
 app.use(express.json());
+app.use(cors());
 
 // routes //
 app.use('/games', require('./controllers/games')); // route for game-related operations //
@@ -25,6 +28,6 @@ app.use((err, req, res, next) => {
 });
 
 // start the server //
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3004;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
