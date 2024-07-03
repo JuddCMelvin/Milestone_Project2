@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
+import logo from './logo.svg'
+import './App.css'
+import Games from './components/MyGames'
+import Home from './components/Home'
+
 
 function App() {
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Game Tracker
-        </a>
-      </header>
+      <Router>
+        <header>
+          <h1 className="title">GameTracker</h1>
+          <div className="navBar">
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/Games">Games</Link>
+              </li>
+              <li>
+                <Link to="/MyGames">MyGames</Link>
+              </li>
+            </ul>
+          </div>
+        </header>
+        <div className="display">
+          <Routes>
+            <Route path="/" component={Home} />
+            <Route path="/games" component={Games} />
+            {/* <Route path="/packages" render={() => <MyGames games={games}/>}  /> */}
+          </Routes>
+        </div>
+      </Router>
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
