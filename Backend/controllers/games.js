@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const fetch = require('node-fetch');
 const db = require('../models');
 
 // RAWG API endpoint base URL //
@@ -18,7 +17,7 @@ router.get('/fetch-save/:gameId', async (req, res) => {
             status: 'Wishlist', // default status, can be updated by user //
             review: '',
             rating: undefined,
-            backgroundImage: gameData.background_image // add background image //
+            backgroundImage: gameData.background_image
         });
 
         const savedGame = await newGame.save();
@@ -37,7 +36,8 @@ router.get('/search', async (req, res) => {
 
         const games = data.results.map((game) => ({
             id: game.id,
-            name: game.name,
+            title: game.title,
+            platform: game.platform,
             released: game.released,
             background_image: game.background_image,
         }));
@@ -50,7 +50,7 @@ router.get('/search', async (req, res) => {
 
 module.exports = router;
 
-// GET all games // 
+// GET all user games // 
 router.get('/', async (req, res) => {
     try {
         const games = await db.Game.find();
@@ -63,8 +63,8 @@ router.get('/', async (req, res) => {
 // POST new game with review and rating // 
 router.post('/', async (req, res) => {
     try {
-        const { title, platform, status, review, rating } = req.body;
-        const newGame = new db.Game({ title, platform, status, review, rating });
+        const { title, platform, status, review, rating, backgroundImage } = req.body;
+        const newGame = new db.Game({ title, platform, status, review, rating, backgroundImage });
         const savedGame = await newGame.save();
         res.status(201).json(savedGame);
     } catch (err) {
@@ -86,8 +86,8 @@ router.get('/:id', async (req, res) => {
 // PUT to update a game by ID, including review and rating //
 router.put('/:id', async (req, res) => {
     try {
-        const { title, platform, status, review, rating } = req.body;
-        const updatedGame = await db.Game.findByIdAndUpdate(req.params.id, { title, platform, status, review, rating }, { new: true });
+        const { title, platform, status, review, rating, backgroundImage } = req.body;
+        const updatedGame = await db.Game.findByIdAndUpdate(req.params.id, { title, platform, status, review, rating, backgroundImage }, { new: true });
         if (!updatedGame) return res.status(404).json({ error: 'Game not found' });
         res.json(updatedGame);
     } catch (err) {
@@ -135,29 +135,5 @@ router.delete('/:id/review', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
-router.get('/new', (req, res) => {
-    res.send('GET /new - Stub for new game form');
-});
-
-router.get('/:id/edit', async (req, res) => {
-    res.send('GET /:id/edit stub')
-});
-
-// GET form for a new game (for server-side rendering)
-// router.get('/new', (req, res) => {
-//     res.send('GET /new - Stub for new game form');
-// });
-
-// GET form to edit a game by ID (for server-side rendering)
-// router.get('/:id/edit', async (req, res) => {
-//     try {
-//         const game = await db.Game.findById(req.params.id);
-//         if (!game) return res.status(404).json({ error: 'Game not found' });
-//         res.send(`GET /${req.params.id}/edit - Stub for editing game form with ID ${req.params.id}`);
-//     } catch (err) {
-//         res.status(500).json({ error: err.message });
-//     }
-// });
 
 module.exports = router;
