@@ -6,8 +6,6 @@ import Home from './components/Home'
 
 
 function App() {
-  
-  // const games = ['Activate your Crystals', 'Monkey Meditation', 'Soak in the Hotsprings', 'Hypnotherapy', 'Mineral Bath']
 
 
   return (
