@@ -27,6 +27,7 @@ router.get('/fetch-save/:gameId', async (req, res) => {
     }
 });
 
+
 // search games from RAWG API //
 router.get('/search', async (req, res) => {
     const { query } = req.query;
@@ -36,10 +37,10 @@ router.get('/search', async (req, res) => {
 
         const games = data.results.map((game) => ({
             id: game.id,
-            title: game.title,
-            platform: game.platform,
+            title: game.name,
+            platform: game.platforms.map(p => p.platform.name).join(', '),
             released: game.released,
-            background_image: game.background_image,
+            backgroundImage: game.background_image,
         }));
 
         res.json(games);
@@ -48,7 +49,6 @@ router.get('/search', async (req, res) => {
     }
 });
 
-module.exports = router;
 
 // GET all user games // 
 router.get('/', async (req, res) => {
