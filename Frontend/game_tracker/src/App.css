@@ -2,7 +2,8 @@
   text-align: center;
   background-color: lightgray; 
   background-size: cover;
-  height: 150vh
+  height: 150vh;
+  width: 100%;
 }
 
 .App h1 {
@@ -16,16 +17,22 @@
   color: white;
 }
 
+.navBar{
+  width: 100%; 
+  background-color: black;
+  padding: 8px;
+}
 .navBar ul {
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 0; 
 }
 
 .navBar li {
   display: inline;
   padding: 8px;
-  background-color: #dddddd;
+  background-color: black;
+  width: 100%; 
 }
 
 li:hover {
@@ -67,7 +74,7 @@ li:hover {
   font-size: 5vh;
 }
 
-.packages {
+/* .packages {
   width: 75%;
   margin: 0 auto;
   margin-top: 50px;
@@ -90,4 +97,4 @@ li:hover {
 .packages li {
   font-size: 25px;
   margin: 20px;
-}
+} */
