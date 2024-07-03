@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: lightgray; 
+  background-color: rgb(49, 49, 49); 
   background-size: cover;
   height: 150vh
 }
@@ -13,8 +13,14 @@
 .title {
   font-size: 4vw;
   padding-top: 10px;
-  color: white;
+  color: rgb(200, 200, 200);
 }
+
+.navBar{
+    width: 100%; 
+    background-color: #1b1b1b;
+    padding: 15px;
+  }
 
 .navBar ul {
   list-style-type: none;
@@ -24,8 +30,8 @@
 
 .navBar li {
   display: inline;
-  padding: 8px;
-  background-color: #dddddd;
+  padding: 15px;
+  background-color: #1b1b1b;
 }
 
 li:hover {
@@ -90,4 +96,11 @@ li:hover {
 .packages li {
   font-size: 25px;
   margin: 20px;
+}
+
+.gameCard {
+    background-color:rgb(133, 133, 133);
+    padding: 2px;
+    margin-left: 750px;
+    margin-right: 750px;
 }

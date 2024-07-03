@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
 import logo from './logo.svg'
 import './App.css'
-import Games from './components/MyGames'
+import MyGames from './components/MyGames'
+import Games from './components/Games'
 import Home from './components/Home'
 
 
@@ -12,8 +13,7 @@ function App() {
     <div className="App">
       <Router>
         <header>
-          <h1 className="title">GameTracker</h1>
-          <div className="navBar">
+        <div className="navBar">
             <ul>
               <li>
                 <Link to="/">Home</Link>
@@ -26,11 +26,13 @@ function App() {
               </li>
             </ul>
           </div>
+          <h1 className="title">GameTracker</h1>
         </header>
         <div className="display">
           <Routes>
-            <Route path="/" component={Home} />
-            <Route path="/games" component={Games} />
+            <Route path="/" element={<Home />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/mygames" element={<MyGames />} />
             {/* <Route path="/packages" render={() => <MyGames games={games}/>}  /> */}
           </Routes>
         </div>
