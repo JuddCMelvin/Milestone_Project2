@@ -11,4 +11,5 @@ const GameSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }, // date when the game entry was created //
 });
 
-module.exports = mongoose.model('Game', GameSchema); // export the Game model //
+const Game = mongoose.model('Game', GameSchema); // export the Game model //
+module.exports = Game; 
