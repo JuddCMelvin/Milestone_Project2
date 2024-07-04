@@ -11,7 +11,7 @@ function Home() {
                     Photo by <a href="AUTHOR_LINK">Brenda Godinez</a> on <a href="UNSPLASH_LINK">Unsplash</a>
                 </div>
             </div>
-            <Link to="http://localhost:5000/gamestest">
+            <Link to="http://localhost:5000/games">
                 <button className="btn-primary">games</button>
             </Link>
         </main>
