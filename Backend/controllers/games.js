@@ -1,6 +1,58 @@
 const games = require('express').Games();
 const db = require('../models');
 
+
+
+// RAWG API endpoint base URL //
+const RAWG_API_URL = 'https://api.rawg.io/api';
+
+// fetch and save game data from RAWG API //
+router.get('/fetch-save/:gameId', async (req, res) => {
+    try {
+        const gameId = req.params.gameId;
+        const response = await fetch(`${RAWG_API_URL}/games/${gameId}?key=${process.env.RAWG_API_KEY}`);
+        const gameData = await response.json();
+
+        const newGame = new db.Game({
+            title: gameData.name,
+            platform: gameData.platforms.map(p => p.platform.name).join(', '),
+            status: 'Wishlist', // default status, can be updated by user //
+            review: '',
+            rating: undefined,
+            backgroundImage: gameData.background_image
+        });
+
+        const savedGame = await newGame.save();
+        res.status(201).json(savedGame);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+// search games from RAWG API //
+router.get('/search', async (req, res) => {
+    const { query } = req.query;
+    try {
+        const response = await fetch(`${RAWG_API_URL}/games?key=${process.env.RAWG_API_KEY}&search=${query}`);
+        const data = await response.json();
+
+        const games = data.results.map((game) => ({
+            id: game.id,
+            title: game.name,
+            platform: game.platforms.map(p => p.platform.name).join(', '),
+            released: game.released,
+            backgroundImage: game.background_image,
+        }));
+
+        res.json(games);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+
 // GET all user games // 
 games.get('/', async (req, res) => {
     try {
