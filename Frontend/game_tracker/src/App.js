@@ -1,71 +1,30 @@
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
 import logo from './logo.svg'
 import './App.css'
-import Games from './components/MyGames'
-import Home from './components/Home'
+import Home from './Home'
+import Index from './components/games/gamesIndex.js'
+import NewGame from './components/games/NewGame.js'
+import EditGameForm from './components/games/EditGameForm.js'
+import Error404 from './Error404'
 import { Fragment } from 'react'
-import Gallery from './components/Gallery'
-import SearchBar from './components/SearchBar'
 import { useState, useEffect } from 'react'
+import GameDetails from './components/games/GameDetails.js'
 
 function App() {
-
-  let [search, setSearch] = useState('')
-	let [message, setMessage] = useState('Search for Games')
-	let [data, setData] = useState([])
-
-	const API_URL = 'http://localhost:3004/games/search?query='
-
-	useEffect(() => {
-		if(search) {
-			const fetchData = async () => {
-				document.title = `${search} Games`
-				const response = await fetch(API_URL + search)
-				const resData = await response.json()
-				if (resData.results.length > 0) {
-					return setData(resData.results)
-				} else {
-					return setMessage('Not Found')
-				}
-			}
-			fetchData()
-		}
-	}, [search])
-	
-	const handleSearch = (e, term) => {
-		e.preventDefault()
-		setSearch(term)
-	}
 
   return (
     <div className="App">
       <Router>
-        <header>
-          <h1 className="title">GameTracker</h1>
-          <div className="navBar">
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/Games">Games</Link>
-              </li>
-              <li>
-                <Link to="/MyGames">MyGames</Link>
-              </li>
-            </ul>
-          </div>
-        </header>
         <div className="display">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/games" element={
-              <Fragment>
-                <SearchBar handleSearch = {handleSearch}/>
-							  <Gallery data={data} />
-              </Fragment>
-            } />
-            {/* <Route path="/packages" render={() => <MyGames games={games}/>}  /> */}
+            <Route path="/games" element={<Index />} />
+            {/* <Route path="/" element={Error404} /> */}
+            {/* <Route exact path="/games/new" ele={gameIndex} /> */}
+            <Route exact path="/games/new" element={<NewGame />} />
+            <Route exact path="/games/:gameId" element={<GameDetails />} />
+            <Route exact path="/games/:gameId/edit" element={<EditGameForm />} />
+            {/* <Route exact path="/games/:gameId/edit" component={GamePlaceForm} /> */}
           </Routes>
         </div>
       </Router>

@@ -1,0 +1,11 @@
+function Error404() {
+    return (
+        <main>
+            <h1>404: PAGE NOT FOUND</h1>
+            <p>Oops, sorry, we can't find this page!</p>
+            <img src="http://localhost:5000/images/broke_game_controller.jpeg" alt="404: Page Not Found" />
+        </main>
+    );
+}
+
+export default Error404
