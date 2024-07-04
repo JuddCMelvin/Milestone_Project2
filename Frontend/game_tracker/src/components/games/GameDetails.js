@@ -17,6 +17,11 @@ function GameDetails() {
 		fetchData()
 	}, [gameId])
 
+    async function deletePlace() {
+		await fetch(`http://localhost:5000/games/${gameId}`, {
+			method: 'DELETE'
+		})
+	}
 
     let comments = (
         <h3 className="inactive">
@@ -32,6 +37,9 @@ function GameDetails() {
                         </h3>
                         <p>
                             {comments}
+                            <button type="submit" className="btn btn-danger" onClick={deletePlace}>
+						        Delete
+					        </button>
                         </p>
                     </div>
                 </div>
