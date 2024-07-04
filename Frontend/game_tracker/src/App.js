@@ -1,10 +1,8 @@
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
 import logo from './logo.svg'
 import './App.css'
-import Games from './components/MyGames'
-import Home from './components/Home'
+import Home from './Home'
 import { Fragment } from 'react'
-import Gallery from './components/Gallery'
 import { useState, useEffect } from 'react'
 
 function App() {
