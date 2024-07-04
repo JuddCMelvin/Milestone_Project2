@@ -14,7 +14,7 @@ function App() {
 	let [message, setMessage] = useState('Search for Games')
 	let [data, setData] = useState([])
 
-	const API_URL = ' http://localhost:3004/games/search?query='
+	const API_URL = 'http://localhost:3004/games/search?query='
 
 	useEffect(() => {
 		if(search) {
