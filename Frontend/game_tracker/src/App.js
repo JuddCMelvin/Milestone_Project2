@@ -4,6 +4,7 @@ import './App.css'
 import Home from './Home'
 import Index from './components/games/gamesIndex.js'
 import NewGame from './components/games/NewGame.js'
+import EditGameForm from './components/games/EditGameForm.js'
 import Error404 from './Error404'
 import { Fragment } from 'react'
 import { useState, useEffect } from 'react'
@@ -22,6 +23,7 @@ function App() {
             {/* <Route exact path="/games/new" ele={gameIndex} /> */}
             <Route exact path="/games/new" element={<NewGame />} />
             <Route exact path="/games/:gameId" element={<GameDetails />} />
+            <Route exact path="/games/:gameId/edit" element={<EditGameForm />} />
             {/* <Route exact path="/games/:gameId/edit" component={GamePlaceForm} /> */}
           </Routes>
         </div>

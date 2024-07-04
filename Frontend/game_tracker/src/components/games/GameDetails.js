@@ -28,7 +28,7 @@ function GameDetails() {
                 <div className="row">
                     <div className="col-sm-6">
                         <h3>
-                            {game.name}
+                            {gameId}
                         </h3>
                         <p>
                             {comments}
