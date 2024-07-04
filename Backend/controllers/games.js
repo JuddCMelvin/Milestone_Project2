@@ -1,5 +1,7 @@
-const router = require('express').Router();
+const games = require('express').Games();
 const db = require('../models');
+
+
 
 // RAWG API endpoint base URL //
 const RAWG_API_URL = 'https://api.rawg.io/api';
@@ -27,6 +29,7 @@ router.get('/fetch-save/:gameId', async (req, res) => {
     }
 });
 
+
 // search games from RAWG API //
 router.get('/search', async (req, res) => {
     const { query } = req.query;
@@ -36,10 +39,10 @@ router.get('/search', async (req, res) => {
 
         const games = data.results.map((game) => ({
             id: game.id,
-            title: game.title,
-            platform: game.platform,
+            title: game.name,
+            platform: game.platforms.map(p => p.platform.name).join(', '),
             released: game.released,
-            background_image: game.background_image,
+            backgroundImage: game.background_image,
         }));
 
         res.json(games);
@@ -48,10 +51,10 @@ router.get('/search', async (req, res) => {
     }
 });
 
-module.exports = router;
+
 
 // GET all user games // 
-router.get('/', async (req, res) => {
+games.get('/', async (req, res) => {
     try {
         const games = await db.Game.find();
         res.json(games);
@@ -61,7 +64,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST new game with review and rating // 
-router.post('/', async (req, res) => {
+games.post('/', async (req, res) => {
     try {
         const { title, platform, status, review, rating, backgroundImage } = req.body;
         const newGame = new db.Game({ title, platform, status, review, rating, backgroundImage });
@@ -73,7 +76,7 @@ router.post('/', async (req, res) => {
 });
 
 // GET a single game by ID //
-router.get('/:id', async (req, res) => {
+games.get('/:id', async (req, res) => {
     try {
         const game = await db.Game.findById(req.params.id);
         if (!game) return res.status(404).json({ error: 'Game not found' });
@@ -84,7 +87,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // PUT to update a game by ID, including review and rating //
-router.put('/:id', async (req, res) => {
+games.put('/:id', async (req, res) => {
     try {
         const { title, platform, status, review, rating, backgroundImage } = req.body;
         const updatedGame = await db.Game.findByIdAndUpdate(req.params.id, { title, platform, status, review, rating, backgroundImage }, { new: true });
@@ -96,7 +99,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE a game by ID //
-router.delete('/:id', async (req, res) => {
+games.delete('/:id', async (req, res) => {
     try {
         const deletedGame = await db.Game.findByIdAndDelete(req.params.id);
         if (!deletedGame) return res.status(404).json({ error: 'Game not found' });
@@ -107,7 +110,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // POST a review and rating for an existing game //
-router.post('/:id/review', async (req, res) => {
+games.post('/:id/review', async (req, res) => {
     try {
         const game = await db.Game.findById(req.params.id);
         if (!game) return res.status(404).json({ error: 'Game not found' });
@@ -122,7 +125,7 @@ router.post('/:id/review', async (req, res) => {
 });
 
 // DELETE a review for a game and reset rating //
-router.delete('/:id/review', async (req, res) => {
+games.delete('/:id/review', async (req, res) => {
     try {
         const game = await db.Game.findById(req.params.id);
         if (!game) return res.status(404).json({ error: 'Game not found' });
@@ -136,4 +139,4 @@ router.delete('/:id/review', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = games;
