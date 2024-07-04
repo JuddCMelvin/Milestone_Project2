@@ -1,6 +1,10 @@
-const mongoose = require('mongoose');
+require('dotenv').config();
+const mongoose = require('mongoose')
 
-mongoose.connect(process.env.MONGO_URI); // connects to mongodb database
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
-// exports the models //
-module.exports.Game = require('./game'); // exports the game model // 
+module.exports.Game = require('./game');
+module.exports.Review = require('./review');
