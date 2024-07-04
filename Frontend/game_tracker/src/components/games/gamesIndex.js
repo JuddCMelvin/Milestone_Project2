@@ -8,7 +8,7 @@ function GamesIndex(data) {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const response = await fetch(`http://localhost:5000/gamesTest`)
+			const response = await fetch(`http://localhost:5000/games`)
 			const resData = await response.json()
 			setGames(resData)
 		}
@@ -19,7 +19,7 @@ function GamesIndex(data) {
 		return (
 			<div className="col-sm-6" key={game.gameId}>
 				<h2>
-                    <button className="btn-primary">{game.name}</button>
+                {game.title}
 				</h2>
 				{/* <img style={{ maxWidth: 200 }} src={place.pic} alt={place.name} />
 				<p className="text-center">
