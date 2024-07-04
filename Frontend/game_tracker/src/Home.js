@@ -1,3 +1,5 @@
+import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
+import logo from './logo.svg'
 
 function Home() {
     return (
@@ -9,9 +11,9 @@ function Home() {
                     Photo by <a href="AUTHOR_LINK">Brenda Godinez</a> on <a href="UNSPLASH_LINK">Unsplash</a>
                 </div>
             </div>
-            <a href="/places">
-                <button className="btn-primary">Places Page</button>
-            </a>
+            <Link to="http://localhost:5000/gamestest">
+                <button className="btn-primary">games</button>
+            </Link>
         </main>
     );
 }
