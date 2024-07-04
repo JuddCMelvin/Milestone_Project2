@@ -1,143 +1,116 @@
-// const games = require('express').Games();
-const router = require('express').Router()
+const router = require('express').Router();
 const db = require('../models');
+const Review = require('../models/review'); // import the Review model //
 
-
-
-// RAWG API endpoint base URL //
-const RAWG_API_URL = 'https://api.rawg.io/api';
-
-// fetch and save game data from RAWG API //
-router.get('/fetch-save/:gameId', async (req, res) => {
-    try {
-        const gameId = req.params.gameId;
-        const response = await fetch(`${RAWG_API_URL}/games/${gameId}?key=${process.env.RAWG_API_KEY}`);
-        const gameData = await response.json();
-
-        const newGame = new db.Game({
-            title: gameData.name,
-            platform: gameData.platforms.map(p => p.platform.name).join(', '),
-            status: 'Wishlist', // default status, can be updated by user //
-            review: '',
-            rating: undefined,
-            backgroundImage: gameData.background_image
-        });
-
-        const savedGame = await newGame.save();
-        res.status(201).json(savedGame);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-
-// search games from RAWG API //
-router.get('/search', async (req, res) => {
-    const { query } = req.query;
-    try {
-        const response = await fetch(`${RAWG_API_URL}/games?key=${process.env.RAWG_API_KEY}&search=${query}`);
-        const data = await response.json();
-
-        const games = data.results.map((game) => ({
-            id: game.id,
-            title: game.name,
-            platform: game.platforms.map(p => p.platform.name).join(', '),
-            released: game.released,
-            backgroundImage: game.background_image,
-        }));
-
-        res.json(games);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-
-
-// GET all user games // 
-games.get('/', async (req, res) => {
+// INDEX - get all games //
+router.get('/', async (req, res) => {
     try {
         const games = await db.Game.find();
         res.json(games);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching games' });
     }
 });
 
-// POST new game with review and rating // 
-games.post('/', async (req, res) => {
+// CREATE - add a new game //
+router.post('/', async (req, res) => {
+    const { title, platform, status, rating } = req.body;
+    if (!title || !status) {
+        return res.status(400).json({ message: 'Title and status are required' });
+    }
+
     try {
-        const { title, platform, status, review, rating, backgroundImage } = req.body;
-        const newGame = new db.Game({ title, platform, status, review, rating, backgroundImage });
-        const savedGame = await newGame.save();
-        res.status(201).json(savedGame);
+        const newGame = new db.Game({ title, platform, status, rating });
+        await newGame.save();
+        res.status(201).json(newGame);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        console.error(err);
+        res.status(500).json({ message: 'Error creating game' });
     }
 });
 
-// GET a single game by ID //
-games.get('/:id', async (req, res) => {
+// SHOW - get details of a specific game by ID //
+router.get('/:id', async (req, res) => {
     try {
-        const game = await db.Game.findById(req.params.id);
-        if (!game) return res.status(404).json({ error: 'Game not found' });
+        const game = await db.Game.findById(req.params.id).populate('reviews');
+        if (!game) {
+            return res.status(404).json({ message: 'Game not found' });
+        }
         res.json(game);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching game' });
     }
 });
 
-// PUT to update a game by ID, including review and rating //
-games.put('/:id', async (req, res) => {
+// REVIEW - add a review to a specific game //
+router.post('/:id/review', async (req, res) => {
+    const { author, content, rating } = req.body;
     try {
-        const { title, platform, status, review, rating, backgroundImage } = req.body;
-        const updatedGame = await db.Game.findByIdAndUpdate(req.params.id, { title, platform, status, review, rating, backgroundImage }, { new: true });
-        if (!updatedGame) return res.status(404).json({ error: 'Game not found' });
+        const game = await db.Game.findById(req.params.id);
+        if (!game) {
+            return res.status(404).json({ message: 'Game not found' });
+        }
+
+        const newReview = new db.Review({ author, content, rating });
+        await newReview.save();
+
+        game.reviews.push(newReview._id);
+        await game.save();
+
+        res.status(201).json(newReview);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error creating review' });
+    }
+});
+
+// UPDATE - update details of a specific game by ID //
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedGame = await db.Game.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedGame) {
+            return res.status(404).json({ message: 'Game not found' });
+        }
         res.json(updatedGame);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        console.error(err);
+        res.status(500).json({ message: 'Error updating game' });
     }
 });
 
-// DELETE a game by ID //
-games.delete('/:id', async (req, res) => {
+// DELETE - remove a specific game by ID //
+router.delete('/:id', async (req, res) => {
     try {
         const deletedGame = await db.Game.findByIdAndDelete(req.params.id);
-        if (!deletedGame) return res.status(404).json({ error: 'Game not found' });
-        res.json(deletedGame);
+        if (!deletedGame) {
+            return res.status(404).json({ message: 'Game not found' });
+        }
+        res.json({ message: 'Game deleted successfully' });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(500).json({ message: 'Error deleting game' });
     }
 });
 
-// POST a review and rating for an existing game //
-games.post('/:id/review', async (req, res) => {
+// DELETE REVIEW - remove a review from a specific game by review ID //
+router.delete('/:id/review/:reviewId', async (req, res) => {
+    const { id: gameId, reviewId } = req.params;
+
     try {
-        const game = await db.Game.findById(req.params.id);
-        if (!game) return res.status(404).json({ error: 'Game not found' });
+        const deletedReview = await Review.findByIdAndDelete(reviewId);
+        if (!deletedReview) {
+            return res.status(404).json({ message: 'Review not found' });
+        }
 
-        game.review = req.body.review;
-        game.rating = req.body.rating;
-        const updatedGame = await game.save();
-        res.json(updatedGame);
+        await db.Game.findByIdAndUpdate(gameId, { $pull: { reviews: reviewId } });
+
+        res.json({ message: 'Review deleted successfully' });
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        console.error('Error deleting review:', err);
+        res.status(500).json({ message: 'Error deleting review' });
     }
 });
 
-// DELETE a review for a game and reset rating //
-games.delete('/:id/review', async (req, res) => {
-    try {
-        const game = await db.Game.findById(req.params.id);
-        if (!game) return res.status(404).json({ error: 'Game not found' });
-
-        game.review = '';
-        game.rating = undefined;
-        const updatedGame = await game.save();
-        res.json(updatedGame);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-module.exports = games;
+module.exports = router;

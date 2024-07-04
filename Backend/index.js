@@ -8,8 +8,8 @@ const gamesRouter = require('./controllers/games');
 app.use(express.json());
 app.use(cors());
 
-// routes //
-app.use('/games', require('./controllers/games')); // route for game-related operations //
+// routes // 
+app.use('/games', gamesRouter); // use the imported gamesRouter //
 
 // home page or default landing //
 app.get('/', (req, res) => {
@@ -21,7 +21,7 @@ app.get('*', (req, res) => {
     res.status(404).send('<h1>404 Page Not Found</h1>');
 });
 
-// error handling middleware /
+// error handling middleware //
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke -_- !');
@@ -30,4 +30,6 @@ app.use((err, req, res, next) => {
 // start the server //
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
 
