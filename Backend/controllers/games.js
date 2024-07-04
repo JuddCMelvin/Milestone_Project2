@@ -46,14 +46,14 @@ router.get('/:id', async (req, res) => {
 
 // REVIEW - add a review to a specific game //
 router.post('/:id/review', async (req, res) => {
-    const { author, content, rating, comment } = req.body;
+    const { author, content, rating } = req.body;
     try {
         const game = await db.Game.findById(req.params.id);
         if (!game) {
             return res.status(404).json({ message: 'Game not found' });
         }
 
-        const newReview = new db.Review({ author, content, rating, comment });
+        const newReview = new db.Review({ author, content, rating });
         await newReview.save();
 
         game.reviews.push(newReview._id);
