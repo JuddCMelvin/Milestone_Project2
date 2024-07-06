@@ -45,5 +45,35 @@ Make sure you have the following installed on your machine:
 
 ### Clone the Repository
 
-git clone https://github.com/JuddCMelvin/Milestone_Project2
-cd Milestone_Project2
+- git clone https://github.com/JuddCMelvin/Milestone_Project2
+- cd Milestone_Project2
+
+### Install Dependencies
+
+#### Backend
+
+- cd backend
+- npm install
+
+#### Frontend
+
+- cd ../frontend
+- npm install
+
+# Running the Application
+
+#### Backend
+
+- Ensure MongoDB is running, then start the backend server:
+
+- cd backend
+- npm start
+- The backend server should now be **running on http://localhost:5000**
+
+#### Frontend
+
+- In a _separate terminal window_, start the frontend development server:
+
+- cd frontend
+- npm start
+- The frontend development server should now be **running on http://localhost:3000**
