@@ -94,12 +94,12 @@ function NewPlaceForm() {
                 <div className="form-group">
 					<label htmlFor="CreatedAt">Date</label>
 					<input
-						value={game.CreatedAt}
+						value={game.createdAt}
 						onChange={e => setGame({ ...game, CreatedAt: e.target.value })}
 						className="form-control"
 						id="CreatedAt" name="CreatedAt" />
 				</div>
-				<input className="btn btn-primary" type="submit" value="Add Place" />
+				<input className="btn btn-primary" type="submit" value="Add Game" />
 			</form>
 		</main>
 	)

@@ -1,41 +1,55 @@
 import { useEffect, useState } from "react";
-import { useHistory} from 'react'; 
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
-function GamesIndex(data) {
-	
-	const [games, setGames] = useState([])
+function GamesIndex() {
+	const [games, setGames] = useState([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const response = await fetch(`http://localhost:5000/games`)
-			const resData = await response.json()
-			setGames(resData)
-		}
-		fetchData()
-	}, [])
+			const response = await fetch(`http://localhost:5000/games`);
+			const resData = await response.json();
+			setGames(resData);
+		};
+		fetchData();
+	}, []);
+
+	const deleteGame = async (gameId) => {
+		await fetch(`http://localhost:5000/games/${gameId}`, {
+			method: 'DELETE',
+		});
+		// Refresh the game list after deletion
+		setGames(games.filter(game => game._id !== gameId));
+	};
 
 	let gamesFormatted = games.map((game) => {
 		return (
-			<div className="col-sm-6" key={game.gameId}>
+			<div className="col-sm-6" key={game._id}>
 				<h2>
-                {game.title}
+					<Link to={`/games/${game._id}`}>{game.title}</Link>
 				</h2>
-				{/* <img style={{ maxWidth: 200 }} src={place.pic} alt={place.name} />
-				<p className="text-center">
-					Located in {place.city}, {place.state}
-				</p> */}
+				<h4>
+					<p>Platform: {game.platform}</p>
+					<p>Status: {game.status}</p>
+					<p>Rating: {game.rating}</p>
+				</h4>
+				<Link to={`/games/${game._id}/edit`} className="btn btn-primary">
+					<button type="button" className="editButton">Edit</button>
+				</Link>
+				<button type="button" className="btn btn-danger" onClick={() => deleteGame(game._id)}>
+					Delete
+				</button>
 			</div>
-		)
-	})
+		);
+	});
+
 	return (
-		<main>
+		<div>
 			<h1>Games to Play</h1>
 			<div className="row">
 				{gamesFormatted}
 			</div>
-		</main>
-	)
+		</div>
+	);
 }
 
 export default GamesIndex;
