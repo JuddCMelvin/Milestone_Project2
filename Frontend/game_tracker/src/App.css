@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: lightgray; 
+  background-color: rgb(41, 41, 41);
   background-size: cover;
   height: 150vh;
   width: 100%;
@@ -9,6 +9,7 @@
 .App h1 {
   font-family: 'Yanone Kaffeesatz', sans-serif;
   margin-top: 0;
+  color:aliceblue
 }
 
 .title {
@@ -17,22 +18,23 @@
   color: white;
 }
 
-.navBar{
-  width: 100%; 
+.navBar {
+  width: 100%;
   background-color: black;
   padding: 8px;
 }
+
 .navBar ul {
   list-style-type: none;
   margin: 0;
-  padding: 0; 
+  padding: 0;
 }
 
 .navBar li {
   display: inline;
   padding: 8px;
   background-color: black;
-  width: 100%; 
+  width: 100%;
 }
 
 li:hover {
@@ -72,6 +74,37 @@ li:hover {
 .aboutpage h1 {
   border-bottom: 6px white solid;
   font-size: 5vh;
+}
+
+.col-sm-6 {
+  background-color: #282c34;
+  border-color: #1a1a1a;
+  border-style: solid;
+  border-width: 5px;
+  margin-left: 700px;
+  margin-right: 700px;
+}
+
+.homeHeader {
+  color: aliceblue
+}
+
+p {
+  color: aliceblue
+}
+
+.btn {
+  color: aliceblue;
+  background-color: #282c34
+}
+
+a {
+  color:rgb(199, 199, 199);
+}
+
+.editButton {
+  color: aliceblue;
+  background-color: #282c34
 }
 
 /* .packages {

@@ -33,7 +33,7 @@ function GamesIndex() {
 					<p>Rating: {game.rating}</p>
 				</h4>
 				<Link to={`/games/${game._id}/edit`} className="btn btn-primary">
-					Edit
+					<button type="button" className="editButton">Edit</button>
 				</Link>
 				<button type="button" className="btn btn-danger" onClick={() => deleteGame(game._id)}>
 					Delete
