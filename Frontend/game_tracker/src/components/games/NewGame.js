@@ -101,13 +101,12 @@ function NewGame() {
 							<input
 								type="radio"
 								value={value}
-								checked={game.rating === value}
-								onChange={(e) => setGame({ ...game, rating: Number(e.target.value) })}
+								checked={game.rating === value.toString()}
+								onChange={(e) => setGame({ ...game, rating: e.target.value })}
 							/> {value}
 						</label>
 					))}
 				</div>
-
 				<div>
 					<label htmlFor="backgroundImage">Image</label>
 					<input
