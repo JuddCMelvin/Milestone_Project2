@@ -94,5 +94,3 @@ function NewReview() {
 }
 
 export default NewReview;
-
-// TODO: why not use useEffect? instead //
