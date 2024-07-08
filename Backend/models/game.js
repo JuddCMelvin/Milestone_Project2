@@ -12,13 +12,14 @@ const GameSchema = new mongoose.Schema({
 });
 
 // pre hook to remove associated reviews before deleting a game //
-GameSchema.pre('remove', async function (next) {
-    try {
-        await Review.deleteMany({ _id: { $in: this.reviews } });
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
+// GameSchema.pre('remove', async function (next) {
+//     try {
+//         await Review.deleteMany({ _id: { $in: this.reviews } });
+//         next();
+//     } catch (err) {
+//         next(err);
+//     }
+// });
+// try to get this to work maybe?
 
 module.exports = mongoose.model('Game', GameSchema); // export the Game model //

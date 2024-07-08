@@ -123,7 +123,13 @@ router.delete('/:id', async (req, res) => {
         if (!game) {
             return res.status(404).json({ message: 'Game not found' });
         }
-        await game.remove(); // trigger the pre hook to remove associated reviews //
+
+        // delete associated reviews //
+        await Review.deleteMany({ _id: { $in: game.reviews } });
+
+        // delete the game //
+        await db.Game.findByIdAndDelete(req.params.id);
+
         res.status(200).json({ message: 'Game and associated reviews deleted successfully' });
     } catch (err) {
         console.error(err);
