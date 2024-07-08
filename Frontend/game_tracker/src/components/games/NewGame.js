@@ -1,108 +1,128 @@
+import React, { useState } from 'react';
+import NavBar from '../NavBar';
 
-import { useState } from "react"
-import { useHistory } from "react"
-
-function NewPlaceForm() {
-
+function NewGame() {
 	const [game, setGame] = useState({
-        title: '', 
-        platform: '', 
-        status: '', 
-        review: '', 
-        rating: '', 
-        backgroundImage: '', 
-        createdAt: ''
-	})
+		title: '',
+		platform: '',
+		status: '',
+		review: '',
+		rating: '',
+		backgroundImage: ''
+	});
+
+	const [message, setMessage] = useState('');
 
 	async function handleSubmit(e) {
-		e.preventDefault()
+		e.preventDefault();
+		setMessage('')
 
-		await fetch(`http://localhost:5000/games`, {
+		const response = await fetch(`http://localhost:5000/games`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(game)
-		})
+		});
 
+		if (response.ok) {
+			setMessage('Game added successfully!');
+			setTimeout(() => {
+				window.location.href = '/games'; // redirects back to /games after 2 seconds //
+			}, 2000);
+		} else {
+			setMessage('Failed to add game.');
+		}
 	}
+
+	// defines options for the status dropdown //
+	const statusOptions = [
+		{ value: '', label: 'Select Status' },
+		{ value: 'Playing', label: 'Playing' },
+		{ value: 'Completed', label: 'Completed' },
+		{ value: 'Wishlist', label: 'Wishlist' }
+	];
 
 	return (
 		<main>
+			<NavBar />
 			<h1>Add a New Game</h1>
-			<form onSubmit={handleSubmit} >
-				<div className="form-group">
+			{message && <p>{message}</p>}
+			<form onSubmit={handleSubmit}>
+				<div>
 					<label htmlFor="title">Game Name</label>
 					<input
 						required
 						value={game.title}
-						onChange={e => setGame({ ...game, title: e.target.value })}
-						className="form-control"
-						id="name"
-						name="name"
+						onChange={(e) => setGame({ ...game, title: e.target.value })}
+						id="title"
+						name="title"
 					/>
 				</div>
-				<div className="form-group">
+				<div>
 					<label htmlFor="platform">Platform</label>
 					<input
 						required
 						value={game.platform}
-						onChange={e => setGame({ ...game, platform: e.target.value })}
-						className="form-control"
+						onChange={(e) => setGame({ ...game, platform: e.target.value })}
 						id="platform"
 						name="platform"
 					/>
 				</div>
-				<div className="form-group">
+				<div>
 					<label htmlFor="status">Status</label>
-					<input
+					<select
 						value={game.status}
-						onChange={e => setGame({ ...game, status: e.target.value })}
-						className="form-control"
+						onChange={(e) => setGame({ ...game, status: e.target.value })}
 						id="status"
 						name="status"
-					/>
+					>
+						{/* drop down of status choices */}
+						{statusOptions.map((option) => (
+							<option key={option.value} value={option.value}>
+								{option.label}
+							</option>
+						))}
+					</select>
 				</div>
-				<div className="form-group">
+				<div>
 					<label htmlFor="review">Review</label>
 					<input
 						value={game.review}
-						onChange={e => setGame({ ...game, review: e.target.value })}
-						className="form-control"
-						id="city"
-						name="city"
+						onChange={(e) => setGame({ ...game, review: e.target.value })}
+						id="review"
+						name="review"
 					/>
 				</div>
-				<div className="form-group">
-					<label htmlFor="rating">Rating</label>
-					<input
-						value={game.rating}
-						onChange={e => setGame({ ...game, rating: e.target.value })}
-						className="form-control"
-						id="rating"
-						name="rating"
-					/>
+				<div>
+					<label htmlFor="rating">Rating</label><br /> {/* radio buttons for ease */}
+					{[1, 2, 3, 4, 5].map((value) => (
+						<label key={value}>
+							<input
+								type="radio"
+								value={value}
+								checked={game.rating === value}
+								onChange={(e) => setGame({ ...game, rating: Number(e.target.value) })}
+							/> {value}
+						</label>
+					))}
 				</div>
-				<div className="form-group">
-					<label htmlFor="BackgroundImage">Image</label>
+
+				<div>
+					<label htmlFor="backgroundImage">Image</label>
 					<input
 						value={game.backgroundImage}
-						onChange={e => setGame({ ...game, backgroundImage: e.target.value })}
-						className="form-control"
-						id="backgroundImage" name="backgroundImage" />
+						onChange={(e) => setGame({ ...game, backgroundImage: e.target.value })}
+						id="backgroundImage"
+						name="backgroundImage"
+					/>
 				</div>
-                <div className="form-group">
-					<label htmlFor="CreatedAt">Date</label>
-					<input
-						value={game.createdAt}
-						onChange={e => setGame({ ...game, CreatedAt: e.target.value })}
-						className="form-control"
-						id="CreatedAt" name="CreatedAt" />
-				</div>
-				<input className="btn btn-primary" type="submit" value="Add Game" />
+				<input type="submit" value="Add Game" />
 			</form>
 		</main>
 	)
-}
+};
 
-export default NewPlaceForm
+export default NewGame;
+
+
