@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-
-const React = require('react');
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import NavBar from '../NavBar';
 
 function GameDetails() {
     const { gameId } = useParams();
     const [game, setGame] = useState(null);
 
+    // FETCH game details based on gameId from the URL params //
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(`http://localhost:5000/games/${gameId}`);
@@ -16,41 +16,65 @@ function GameDetails() {
         fetchData();
     }, [gameId]);
 
+    // delete the game by ID //
     async function deleteGame() {
         await fetch(`http://localhost:5000/games/${gameId}`, {
             method: 'DELETE'
         });
+        window.location.href = '/games'; // redirect to /games after deletion //
     }
 
+    // delete a review //
+    async function deleteReview(reviewId) {
+        await fetch(`http://localhost:5000/games/${gameId}/review/${reviewId}`, {
+            method: 'DELETE'
+        });
+        // refresh game details after deleting the review //
+        const response = await fetch(`http://localhost:5000/games/${gameId}`);
+        const resData = await response.json();
+        setGame(resData);
+    }
+
+    // loading sign //
     if (!game) return <div>Loading...</div>;
 
-    const reviews = game.reviews.map((review) => {
-        return (
-            <div key={review._id}>
-                <h3 className="inactive">{review.author}</h3>
-                <p>{review.content}</p>
-                <p>Rating: {review.rating}</p>
-            </div>
-        );
-    });
+    // maps through the reviews array and create elements for each review //
+    const reviews = game.reviews.map((review) => (
+        <div key={review._id}>
+            <h3 className="inactive">{review.author}</h3>
+            <p>{review.review}</p>
+            <p>Rating: {review.rating}</p>
+            <Link to={`/games/${gameId}/review/${review._id}/edit`}>Edit Review</Link>
+            <button onClick={() => deleteReview(review._id)}>Delete Review</button>
+        </div>
+    ));
+
+    // to the NewReviewForm page //
+    function redirectToNewReview() {
+        window.location.href = `/games/${gameId}/review`;
+    }
 
     return (
         <main>
+            <NavBar />
             <div className="row">
-                <div className="col-sm-6">
+                <div>
                     <h3>{game.title}</h3>
                     <p>{game.description}</p>
                     <div>
                         <h2>Reviews</h2>
                         {reviews}
                     </div>
-                    <button type="button" className="btn btn-danger" onClick={deleteGame}>
+                    <button type="button" onClick={deleteGame}>
                         Delete
                     </button>
                 </div>
+                <div>
+                    <button type="button" onClick={redirectToNewReview}>Add Review</button>
+                </div>
             </div>
         </main>
-    );
-}
+    )
+};
 
 export default GameDetails;
