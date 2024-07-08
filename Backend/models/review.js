@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const ReviewSchema = new mongoose.Schema({
-    title: { type: mongoose.Schema.Types.ObjectId, ref: 'Game', required: true }, // reference to the game being reviewed //
     author: { type: String, required: true }, // reference to the user who wrote the review //
     review: { type: String }, // content of the review //
     rating: { type: Number, min: 1, max: 5, required: true }, // rating given by the user (1 to 5) //

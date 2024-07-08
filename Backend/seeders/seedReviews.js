@@ -14,7 +14,6 @@ async function seed() {
 
         // creates the review for the game // 
         const review = await db.Review.create({
-            title: game._id, // auto associates the review with the game using ObjectId //
             author: 'Cameron',
             review: 'Wow, what a relaxing non-stressful game!',
             rating: 5.0
