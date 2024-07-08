@@ -1,19 +1,8 @@
 # Video Game Library App
 
-## Table of Contents
-
-1. [Introduction](#introduction)
-2. [Features](#features)
-3. [Technologies Used](#technologies-used)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [Data Structure](#data-structure)
-7. [Contributing](#contributing)
-8. [License](#license)
-
 ## Introduction
 
-The Video Game Library App is a personal library for managing your video games. Users can keep track of the games they are currently playing, have completed, or wish to play in the future. Each game entry can be reviewed and rated. The app is built using the MERN stack (MongoDB, Express.js, React, Node.js).
+The Game Zone is a personal library for managing your video games. Users can keep track of the games they are currently playing, have completed, or wish to play in the future. Each game entry can be reviewed and rated. The app is built using the MERN stack (MongoDB, Express.js, React, Node.js).
 
 ## Features
 
@@ -21,6 +10,7 @@ The Video Game Library App is a personal library for managing your video games. 
 - **Delete Games**: Users can delete games from their library.
 - **Edit Games**: Users can edit the details of their games.
 - **Review and Rate Games**: Users can add reviews and ratings to their games.
+- **Edit and Delete Reviews**: Users can edit and delete reviews of their games.
 - **Categorize Games**: Games can be categorized as currently playing, completed, or wishlist.
 
 ## Technologies Used
@@ -87,23 +77,18 @@ Make sure you have the following installed on your machine:
 
 - The frontend development server should now be **running on http://localhost:3000**
 
-### Usage
+### API Endpoints
 
-- Add a New Game: Use the form to add details of a new game to your library.
-- Edit a Game: Click on the edit button next to a game entry to update its details.
-- Delete a Game: Click on the delete button next to a game entry to remove it from your library.
-- Review and Rate a Game: Add your review and rating to each game entry.
-- Data Structure
-
-```
-{
-  "_id": "60d21b4667d0d8992e610c85",
-  "title": "The Legend of Zelda: Breath of the Wild",
-  "status": "Playing",
-  "review": "Amazing game with an open world to explore.",
-  "rating": 5
-}
-```
+| Endpoint | Method | Description |
+| ------------- | ------------- || ------------- |
+| '/games' | GET | Get a list of all games |
+| '/games' | POST | Add a new game |
+| '/games/:id' | GET | Get details of a specific game by its ID |
+| '/games/:id' | PUT | Update details of a specific game by its ID |
+| '/games/:id' | DELETE | Delete a specific game by its ID |
+| '/games/:gameId/review' | POST | Add a new review to specific game |
+| '/games/:gameId/review/:reviewId' | PUT | Updates a specific review by its ID |
+| '/games/:gameId/review/:reviewId' | DELETE | Delete a specific review by its ID |
 
 ### Game Fields
 
