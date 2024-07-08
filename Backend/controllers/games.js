@@ -15,14 +15,24 @@ router.get('/', async (req, res) => {
 
 // CREATE - add a new game //
 router.post('/', async (req, res) => {
-    const { title, platform, status, rating } = req.body;
+    const { title, platform, status, review, rating } = req.body;
     if (!title || !status) {
         return res.status(400).json({ message: 'Title and status are required' });
     }
 
     try {
+        // Create new game
         const newGame = new db.Game({ title, platform, status, rating });
         await newGame.save();
+
+        // If review is provided, create and associate it with the new game
+        if (review && rating) {
+            const newReview = new db.Review({ author: 'Anonymous', review, rating });
+            await newReview.save();
+            newGame.reviews.push(newReview._id);
+            await newGame.save();
+        }
+
         res.status(201).json(newGame);
     } catch (err) {
         console.error(err);
@@ -106,19 +116,21 @@ router.put('/:id/review/:reviewId', async (req, res) => {
     }
 });
 
-// DELETE - remove a specific game by ID //
+// DELETE - remove a game and its associated reviews from db //
 router.delete('/:id', async (req, res) => {
     try {
-        const deletedGame = await db.Game.findByIdAndDelete(req.params.id);
-        if (!deletedGame) {
+        const game = await db.Game.findById(req.params.id);
+        if (!game) {
             return res.status(404).json({ message: 'Game not found' });
         }
-        res.json({ message: 'Game deleted successfully' });
+        await game.remove(); // trigger the pre hook to remove associated reviews //
+        res.status(200).json({ message: 'Game and associated reviews deleted successfully' });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error deleting game' });
     }
 });
+
 
 // DELETE REVIEW - remove a review from a specific game by review ID //
 router.delete('/:id/review/:reviewId', async (req, res) => {
