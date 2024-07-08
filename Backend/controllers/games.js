@@ -46,14 +46,17 @@ router.get('/:id', async (req, res) => {
 
 // REVIEW - add a review to a specific game //
 router.post('/:id/review', async (req, res) => {
-    const { author, content, rating } = req.body;
+    const { author, review, rating } = req.body;
+
+    // console.log('Received review data:', req.body);
+
     try {
         const game = await db.Game.findById(req.params.id);
         if (!game) {
             return res.status(404).json({ message: 'Game not found' });
         }
 
-        const newReview = new db.Review({ author, content, rating });
+        const newReview = new db.Review({ author, review, rating });
         await newReview.save();
 
         game.reviews.push(newReview._id);
@@ -77,6 +80,29 @@ router.put('/:id', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error updating game' });
+    }
+});
+
+// UPDATE REVIEW - update a review by review ID //
+router.put('/:id/review/:reviewId', async (req, res) => {
+    const { reviewId } = req.params;
+    const { author, review, rating } = req.body;
+
+    try {
+        const updatedReview = await db.Review.findByIdAndUpdate(reviewId, {
+            author,
+            review,
+            rating
+        }, { new: true });
+
+        if (!updatedReview) {
+            return res.status(404).json({ message: 'Review not found' });
+        }
+
+        res.status(200).json(updatedReview);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error updating review' });
     }
 });
 
