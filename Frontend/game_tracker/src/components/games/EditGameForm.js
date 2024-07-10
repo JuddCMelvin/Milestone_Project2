@@ -74,14 +74,6 @@ function EditGameForm() {
 						<option value="Wishlist">Wishlist</option>
 					</select>
 				</div>
-				<div>
-					<label htmlFor="image">Image</label>
-					<input
-						value={game.image}
-						onChange={e => setGame({ ...game, image: e.target.value })}
-						className="form-control"
-						id="image" name="image" />
-				</div>
 				<input type="submit" value="Edit Game" />
 			</form>
 		</main>

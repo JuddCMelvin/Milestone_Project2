@@ -15,14 +15,14 @@ router.get('/', async (req, res) => {
 
 // CREATE - add a new game //
 router.post('/', async (req, res) => {
-    const { title, platform, status, review, rating, image } = req.body;
+    const { title, platform, status, review, rating } = req.body;
     if (!title || !status) {
         return res.status(400).json({ message: 'Title and status are required' });
     }
 
     try {
         // create new game //
-        const newGame = new db.Game({ title, platform, status, review, rating, image });
+        const newGame = new db.Game({ title, platform, status, review, rating });
         await newGame.save();
 
         // create and associate review with the new game //
