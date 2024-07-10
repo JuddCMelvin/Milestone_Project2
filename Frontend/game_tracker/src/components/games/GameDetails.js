@@ -51,7 +51,7 @@ function GameDetails() {
 
     // to the NewReviewForm page //
     function redirectToNewReview() {
-        window.location.href = `/games/${gameId}/review`;
+        window.location.href = `/games/${gameId}/review`; // useHistory? //
     }
 
     return (

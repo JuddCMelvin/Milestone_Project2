@@ -8,7 +8,7 @@ function EditGameForm() {
 		title: '',
 		platform: '',
 		status: '',
-		backgroundImage: '',
+		image: '',
 	});
 
 	useEffect(() => {
@@ -38,7 +38,7 @@ function EditGameForm() {
 		<main>
 			<NavBar />
 			<form onSubmit={handleSubmit}>
-				<div className="form-group">
+				<div>
 					<label htmlFor="title">Game Name</label>
 					<input
 						required
@@ -49,7 +49,7 @@ function EditGameForm() {
 						name="title"
 					/>
 				</div>
-				<div className="form-group">
+				<div>
 					<label htmlFor="platform">Platform</label>
 					<input
 						required
@@ -60,7 +60,7 @@ function EditGameForm() {
 						name="platform"
 					/>
 				</div>
-				<div className="form-group">
+				<div>
 					<label htmlFor="status">Status</label>
 					<select
 						value={game.status}
@@ -74,15 +74,7 @@ function EditGameForm() {
 						<option value="Wishlist">Wishlist</option>
 					</select>
 				</div>
-				<div className="form-group">
-					<label htmlFor="backgroundImage">Image</label>
-					<input
-						value={game.backgroundImage}
-						onChange={e => setGame({ ...game, backgroundImage: e.target.value })}
-						className="form-control"
-						id="backgroundImage" name="backgroundImage" />
-				</div>
-				<input className="btn btn-primary" type="submit" value="Edit Game" />
+				<input type="submit" value="Edit Game" />
 			</form>
 		</main>
 	)

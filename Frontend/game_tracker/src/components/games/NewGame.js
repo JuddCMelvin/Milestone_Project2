@@ -8,7 +8,6 @@ function NewGame() {
 		status: '',
 		review: '',
 		rating: '',
-		backgroundImage: ''
 	});
 
 	const [message, setMessage] = useState('');
@@ -106,15 +105,6 @@ function NewGame() {
 							/> {value}
 						</label>
 					))}
-				</div>
-				<div>
-					<label htmlFor="backgroundImage">Image</label>
-					<input
-						value={game.backgroundImage}
-						onChange={(e) => setGame({ ...game, backgroundImage: e.target.value })}
-						id="backgroundImage"
-						name="backgroundImage"
-					/>
 				</div>
 				<input type="submit" value="Add Game" />
 			</form>
