@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const db = require('../models');
-const Review = require('../models/review'); // import the Review model //
+const Review = require('../models/review');
 
 // INDEX - get all games //
 router.get('/', async (req, res) => {
@@ -15,17 +15,17 @@ router.get('/', async (req, res) => {
 
 // CREATE - add a new game //
 router.post('/', async (req, res) => {
-    const { title, platform, status, review, rating } = req.body;
+    const { title, platform, status, review, rating, image } = req.body;
     if (!title || !status) {
         return res.status(400).json({ message: 'Title and status are required' });
     }
 
     try {
-        // Create new game
-        const newGame = new db.Game({ title, platform, status, rating });
+        // create new game //
+        const newGame = new db.Game({ title, platform, status, review, rating, image });
         await newGame.save();
 
-        // If review is provided, create and associate it with the new game
+        // create and associate review with the new game //
         if (review && rating) {
             const newReview = new db.Review({ author: 'Anonymous', review, rating });
             await newReview.save();

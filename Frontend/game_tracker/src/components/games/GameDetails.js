@@ -51,7 +51,7 @@ function GameDetails() {
 
     // to the NewReviewForm page //
     function redirectToNewReview() {
-        window.location.href = `/games/${gameId}/review`;
+        window.location.href = `/games/${gameId}/review`; // useHistory? //
     }
 
     return (
@@ -61,6 +61,11 @@ function GameDetails() {
                 <div>
                     <h3>{game.title}</h3>
                     <p>{game.description}</p>
+                    {game.image && (
+                        <div>
+                            <img src={game.image} alt={`${game.title} cover`} style={{ maxWidth: '100%' }} />
+                        </div>
+                    )}
                     <div>
                         <h2>Reviews</h2>
                         {reviews}

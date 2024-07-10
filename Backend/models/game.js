@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Review = require('./review'); // Adjust the path if necessary
+const Review = require('./review');
 
 const GameSchema = new mongoose.Schema({
     title: { type: String, required: true }, // title of the game //
@@ -10,16 +10,5 @@ const GameSchema = new mongoose.Schema({
     image: { type: String }, // URL of the game's image
     createdAt: { type: Date, default: Date.now } // date when the game entry was created //
 });
-
-// pre hook to remove associated reviews before deleting a game //
-// GameSchema.pre('remove', async function (next) {
-//     try {
-//         await Review.deleteMany({ _id: { $in: this.reviews } });
-//         next();
-//     } catch (err) {
-//         next(err);
-//     }
-// });
-// try to get this to work maybe?
 
 module.exports = mongoose.model('Game', GameSchema); // export the Game model //
