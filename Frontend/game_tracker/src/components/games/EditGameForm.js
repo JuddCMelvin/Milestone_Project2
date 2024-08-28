@@ -1,8 +1,9 @@
-
-import { useState, useEffect } from "react"
-import { useParams } from "react-router"
+import { useState, useEffect } from "react";
+import { useParams } from "react-router";
+import NavBar from '../NavBar';
 
 function EditGameForm() {
+<<<<<<< HEAD
 
     const { gameId } = useParams()
 	console.log("gamesId from useParams:", gameId);
@@ -15,18 +16,27 @@ function EditGameForm() {
         backgroundImage: '', 
         createdAt: ''
 	})
+=======
+	const { gameId } = useParams();
+	const [game, setGame] = useState({
+		title: '',
+		platform: '',
+		status: '',
+		image: '',
+	});
+>>>>>>> f50f7029601b575d913a8806f9bb3ba6c64a7a93
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const response = await fetch(`http://localhost:5000/games/${gamesId}`)
-	// 		const resData = await response.json()
-	// 		setGame(resData)
-	// 	}
-	// 	fetchData()
-	// }, [ gamesId ])
+	useEffect(() => {
+		const fetchData = async () => {
+			const response = await fetch(`http://localhost:5000/games/${gameId}`);
+			const resData = await response.json();
+			setGame(resData);
+		};
+		fetchData();
+	}, [gameId]);
 
 	async function handleSubmit(e) {
-		e.preventDefault()
+		e.preventDefault();
 
 		await fetch(`http://localhost:5000/games/${gameId}/review`, {
 			method: 'PUT',
@@ -34,26 +44,27 @@ function EditGameForm() {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(game)
-		})
+		});
 
+		window.location.href = `/games/${gameId}`;
 	}
 
 	return (
 		<main>
-			{gameId}
-			<form onSubmit={handleSubmit} >
-				<div className="form-group">
+			<NavBar />
+			<form onSubmit={handleSubmit}>
+				<div>
 					<label htmlFor="title">Game Name</label>
 					<input
 						required
 						value={game.title}
 						onChange={e => setGame({ ...game, title: e.target.value })}
 						className="form-control"
-						id="name"
-						name="name"
+						id="title"
+						name="title"
 					/>
 				</div>
-				<div className="form-group">
+				<div>
 					<label htmlFor="platform">Platform</label>
 					<input
 						required
@@ -64,16 +75,21 @@ function EditGameForm() {
 						name="platform"
 					/>
 				</div>
-				<div className="form-group">
+				<div>
 					<label htmlFor="status">Status</label>
-					<input
+					<select
 						value={game.status}
 						onChange={e => setGame({ ...game, status: e.target.value })}
 						className="form-control"
 						id="status"
 						name="status"
-					/>
+					>
+						<option value="Playing">Playing</option>
+						<option value="Completed">Completed</option>
+						<option value="Wishlist">Wishlist</option>
+					</select>
 				</div>
+<<<<<<< HEAD
 				<div className="form-group">
 					<label htmlFor="review">Review</label>
 					<input
@@ -111,9 +127,12 @@ function EditGameForm() {
 						id="createdAt" name="createdAt" />
 				</div>
 				<input className="btn btn-primary" type="submit" value="Edit Game" />
+=======
+				<input type="submit" value="Edit Game" />
+>>>>>>> f50f7029601b575d913a8806f9bb3ba6c64a7a93
 			</form>
 		</main>
 	)
-}
+};
 
-export default EditGameForm
+export default EditGameForm;

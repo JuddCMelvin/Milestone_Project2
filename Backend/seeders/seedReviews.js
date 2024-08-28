@@ -6,17 +6,20 @@ mongoose.connect(process.env.MONGO_URI);
 
 async function seed() {
     try {
+        // finds the game to associate the review with // 
         const game = await db.Game.findOne({ title: 'Elden Ring' });
         if (!game) {
             throw new Error('Game not found');
         }
 
+        // creates the review for the game // 
         const review = await db.Review.create({
             author: 'Cameron',
-            content: 'Wow, what a relaxing non-stressful game!',
+            review: 'Wow, what a relaxing non-stressful game!',
             rating: 5.0
         });
 
+        // add the review's ObjectId to the game's reviews array //
         game.reviews.push(review._id);
         await game.save();
 
