@@ -4,16 +4,16 @@ import { useParams } from "react-router"
 
 function EditGameForm() {
 
-	const { gameId } = useParams()
+    const { gameId } = useParams()
 	console.log("gamesId from useParams:", gameId);
-	const [game, setGame] = useState({
-		title: '',
-		platform: '',
-		status: '',
-		review: '',
-		rating: '',
-		backgroundImage: '',
-		createdAt: ''
+    const [game, setGame] = useState({
+		title: '', 
+        platform: '', 
+        status: '', 
+        review: '', 
+        rating: '', 
+        backgroundImage: '', 
+        createdAt: ''
 	})
 
 	// useEffect(() => {
@@ -28,7 +28,7 @@ function EditGameForm() {
 	async function handleSubmit(e) {
 		e.preventDefault()
 
-		await fetch(`http://localhost:5000/games/${gameId}`, {
+		await fetch(`http://localhost:5000/games/${gameId}/review`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ function EditGameForm() {
 						className="form-control"
 						id="backgroundImage" name="backgroundImage" />
 				</div>
-				<div className="form-group">
+                <div className="form-group">
 					<label htmlFor="createdAt">Date</label>
 					<input
 						value={game.createdAt}
